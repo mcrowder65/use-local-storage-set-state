@@ -10,8 +10,8 @@ function useLocalStorageSetState(initialValue, name) {
   const theirSetValue = theirNewValue => {
     let valueToSet;
     if (typeof theirNewValue === "function") {
-      setValue(theirNewValue(value));
       valueToSet = theirNewValue(value);
+      setValue(valueToSet);
     } else {
       setValue(theirNewValue);
       valueToSet = theirNewValue;
