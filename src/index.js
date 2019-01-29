@@ -1,12 +1,11 @@
 import React from "react";
+import store from "store";
 
 function useLocalStorageSetState(initialValue, name) {
   const actualInitialValue =
-    localStorage.getItem(name) !== undefined
-      ? JSON.parse(localStorage.getItem(name))
-      : initialValue;
+    store.get(name) !== undefined ? store.get(name) : initialValue;
   const [value, setValue] = React.useState(actualInitialValue);
-  
+
   const theirSetValue = theirNewValue => {
     let valueToSet;
     if (typeof theirNewValue === "function") {
@@ -16,7 +15,7 @@ function useLocalStorageSetState(initialValue, name) {
       setValue(theirNewValue);
       valueToSet = theirNewValue;
     }
-    localStorage.setItem(name, valueToSet);
+    store.set(name, valueToSet);
   };
   return [value, theirSetValue];
 }

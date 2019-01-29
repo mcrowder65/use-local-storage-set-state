@@ -2,9 +2,12 @@
   "name": "use-local-storage-set-state",
   "version": "1.0.2",
   "description": "Simple React.useState that sits on top of localStorage",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "linter": "eslint src --ext .js",
+    "jest": "jest --coverage",
+    "test": "npm run linter && npm run jest",
+    "build": "babel src --out-dir lib --ignore \"src/**/*.spec.js\",\"src/**/*.test.js\""
   },
   "repository": {
     "type": "git",
@@ -13,6 +16,53 @@
   "author": "mcrowder65",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "1.16.1"
-  }
+    "@babel/cli": "7.2.3",
+    "@babel/core": "7.2.2",
+    "@babel/preset-env": "7.3.1",
+    "@babel/preset-react": "7.0.0",
+    "babel-jest": "24.0.0",
+    "eslint-config-mcrowder65": "0.0.32",
+    "husky": "1.3.1",
+    "jest": "24.0.0",
+    "jest-dom": "3.0.1",
+    "jest-localstorage-mock": "2.4.0",
+    "prettier": "1.16.1",
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1",
+    "react-testing-library": "5.4.4"
+  },
+  "dependencies": {
+    "store": "2.0.12"
+  },
+  "peerDependencies": {
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1"
+  },
+  "eslintConfig": {
+    "extends": "mcrowder65"
+  },
+  "jest": {
+    "collectCoverageFrom": ["src/index.js"],
+    "setupFilesAfterEnv": ["<rootDir>/test/config.js"],
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ],
+    "transform": {
+      "^.+\\.js?$": "babel-jest"
+    },
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm build && npm test"
+    }
+  },
+  "babelConfig": ".babelrc.js"
 }
