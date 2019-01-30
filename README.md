@@ -23,10 +23,10 @@ Example:
 
 ```jsx
 import React from "react";
-import useLocalStorageSetState from "use-local-storage-set-state";
+import useState from "use-local-storage-set-state";
 
 function MyComponent() {
-  const [value, setValue] = useLocalStorageSetState(
+  const [value, setValue] = useState(
     false,
     "name-of-local-storage-key"
   );
