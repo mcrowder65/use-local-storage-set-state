@@ -8,7 +8,7 @@ script:
   - npm run coveralls;
 deploy:
   provider: npm
-  email: "mcrowder65@gmail.com"
+  email: "$NPM_EMAIL"
   api_key: "$NPM_TOKEN"
   on:
     branch: master
