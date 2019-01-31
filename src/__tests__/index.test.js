@@ -6,6 +6,7 @@ import useState from "../index";
 function MyComponent() {
   const [name, setName] = useState("", "name");
   const [flag, setFlag] = useState(false, "flag");
+  const [array, setArray] = useState([], "array");
   return (
     <div>
       {name}
@@ -18,6 +19,11 @@ function MyComponent() {
       <button data-testid="button" onClick={() => setFlag(state => !state)}>
         {String(flag)}
       </button>
+      {array.join(",")}
+      <button
+        data-testid="array-button"
+        onClick={() => setArray(state => [...state, state.length + 1])}
+      />
     </div>
   );
 }
@@ -53,4 +59,22 @@ test("that on component reloads, booleans persist", () => {
   rerender(<MyComponent />);
 
   expect(getByText(/true/i)).toBeInTheDocument();
+});
+
+test("that on component reloads, arrays persist", () => {
+  const { getByText, getByTestId, unmount, rerender } = render(<MyComponent />);
+
+  fireEvent.click(getByTestId("array-button"));
+
+  expect(getByText(/1/i)).toBeInTheDocument();
+
+  fireEvent.click(getByTestId("array-button"));
+
+  expect(getByText(/1,2/i)).toBeInTheDocument();
+
+  unmount();
+
+  rerender(<MyComponent />);
+
+  expect(getByText(/1,2/i)).toBeInTheDocument();
 });
