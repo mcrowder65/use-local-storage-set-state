@@ -38,3 +38,19 @@ export default MyComponent;
 ```
 
 And on refreshes, the value will persist.
+
+
+### Usage in tests
+
+Under the hood, this module is obviously using localStorage. 
+When using this with jest, you will run into errors since jest does not have localStorage.
+Which is why this package requires `jest-localstorage-mock` as a peerDependency.
+
+In order to get your tests to work, run `npm install -D jest-localstorage-mock`, and then in your jest configuration, add:
+
+```json
+"setupFiles": [
+  "jest-localstorage-mock"
+]
+```
+
