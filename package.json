@@ -1,6 +1,6 @@
 {
   "name": "use-local-storage-set-state",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Simple React.useState that sits on top of localStorage",
   "main": "lib/index.js",
   "scripts": {
