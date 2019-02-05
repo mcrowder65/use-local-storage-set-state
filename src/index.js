@@ -2,6 +2,11 @@ import React from "react";
 import store from "store";
 
 function useLocalStorageSetState(initialValue, name) {
+  if (!name) {
+    throw new Error(
+      "Name must be provided to persist properly to localStorage"
+    );
+  }
   const actualInitialValue =
     store.get(name) !== undefined ? store.get(name) : initialValue;
   const [value, setValue] = React.useState(actualInitialValue);
