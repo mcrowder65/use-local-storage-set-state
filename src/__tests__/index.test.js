@@ -78,3 +78,7 @@ test("that on component reloads, arrays persist", () => {
 
   expect(getByText(/1,2/i)).toBeInTheDocument();
 });
+
+test("that it throws when no name is provided", () => {
+  expect(() => useState("asdf")).toThrow();
+});
