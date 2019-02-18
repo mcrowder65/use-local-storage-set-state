@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { cleanup, render, fireEvent } from "react-testing-library";
 
 import useState from "../index";
@@ -13,16 +14,16 @@ function MyComponent() {
       <input
         data-testid="name"
         value={name}
-        onChange={e => setName(e.target.value)}
+        onChange={(e) => setName(e.target.value)}
       />
 
-      <button data-testid="button" onClick={() => setFlag(state => !state)}>
+      <button data-testid="button" onClick={() => setFlag((state) => !state)}>
         {String(flag)}
       </button>
       {array.join(",")}
       <button
         data-testid="array-button"
-        onClick={() => setArray(state => [...state, state.length + 1])}
+        onClick={() => setArray((state) => [...state, state.length + 1])}
       />
     </div>
   );
@@ -32,7 +33,7 @@ afterEach(cleanup);
 
 test("that after inserting text into the document then remounting, the text will remain", () => {
   const { queryByText, queryByTestId, unmount, rerender } = render(
-    <MyComponent />
+    <MyComponent />,
   );
 
   const newValue = "Lebron James";
@@ -81,4 +82,42 @@ test("that on component reloads, arrays persist", () => {
 
 test("that it throws when no name is provided", () => {
   expect(() => useState("asdf")).toThrow();
+});
+
+test("that when passing a function, it utilizes it to set the value", () => {
+  function MyComp(props) {
+    const [index, setIndex] = useState((prev) => {
+      if (prev >= props.arr.length || prev === undefined) {
+        return 0;
+      } else {
+        return prev;
+      }
+    }, "index-local-storage");
+    return (
+      <div>
+        <button data-testid="set-index-0" onClick={() => setIndex(0)} />
+        <div data-testid="index">{props.arr[index]}</div>
+        <button data-testid="set-index-1" onClick={() => setIndex(1)} />
+      </div>
+    );
+  }
+
+  MyComp.propTypes = {
+    arr: PropTypes.array.isRequired,
+  };
+
+  const { getByTestId, getByText, rerender, unmount } = render(
+    <MyComp arr={["first", "second"]} />,
+  );
+
+  expect(getByText(/first/i)).toBeInTheDocument();
+
+  fireEvent.click(getByTestId("set-index-1"));
+
+  expect(getByText(/second/i)).toBeInTheDocument();
+
+  unmount();
+  rerender(<MyComp arr={["first"]} />);
+
+  expect(getByText(/first/i)).toBeInTheDocument();
 });
