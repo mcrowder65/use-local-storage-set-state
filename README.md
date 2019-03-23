@@ -1,5 +1,10 @@
 # use-local-storage-set-state
 
+## This project has been deprecated in favor of using https://github.com/mcrowder65/mooks
+
+## This hook is available in that project.
+
+
 [![NPM version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Total Status][total-image]][total-url]
